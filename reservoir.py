@@ -1,23 +1,19 @@
-def reservoir_crawler(msg):
-    url  = "https://www.taiwanstat.com/waters/latest"
-    re   = requests.get(url)
-    data = re.json()
-    data = data[0]
+import json
+import requests
 
-    reservoir = []
-    # 水庫名稱
-    for d in data:
-        reservoir.append(d)
+reservoir = []
 
-    for r in reservoir:
-        if msg in reservoir:
-            name = data[str(msg)]["name"]
-            volu = data[str(msg)]["volumn"]
-            perc = data[str(msg)]["percentage"]
-        else:
-            continue
+url  = "https://www.taiwanstat.com/waters/latest"
+re   = requests.get(url)
+data = re.json()
+data = data[0]
 
-    content = ""
-    content += f"名稱: {name}\n蓄水百分比: {perc}%\n有效蓄水量: {volu}"
+for d in data:
+    reservoir.append(d)
 
-    return content
+for r in reservoir:
+    name = data[r]["name"]
+    volu = data[r]["volumn"]
+    perc = data[r]["percentage"]
+    print(f"名稱: {name}\n有效蓄水量: {volu}\n蓄水百分比: {perc}%")
+    print("-------------------")       

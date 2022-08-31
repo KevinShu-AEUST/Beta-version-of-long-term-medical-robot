@@ -1,19 +1,23 @@
-import json
-import requests
+def reservoir_crawler(msg):
+    url  = "https://www.taiwanstat.com/waters/latest"
+    re   = requests.get(url)
+    data = re.json()
+    data = data[0]
 
-reservoir = []
+    reservoir = []
+    # ¤ô®w¦WºÙ
+    for d in data:
+        reservoir.append(d)
 
-url  = "https://www.taiwanstat.com/waters/latest"
-re   = requests.get(url)
-data = re.json()
-data = data[0]
+    for r in reservoir:
+        if msg in reservoir:
+            name = data[str(msg)]["name"]
+            volu = data[str(msg)]["volumn"]
+            perc = data[str(msg)]["percentage"]
+        else:
+            continue
 
-for d in data:
-    reservoir.append(d)
+    content = ""
+    content += f"¦WºÙ: {name}\n»W¤ô¦Ê¤À¤ñ: {perc}%\n¦³®Ä»W¤ô¶q: {volu}"
 
-for r in reservoir:
-    name = data[r]["name"]
-    volu = data[r]["volumn"]
-    perc = data[r]["percentage"]
-    print(f"åç¨±: {name}\næœ‰æ•ˆè“„æ°´é‡: {volu}\nè“„æ°´ç™¾åˆ†æ¯”: {perc}%")
-    print("-------------------")       
+    return content
